@@ -21,7 +21,7 @@ async function realizarConsulta() {
     if (data.error) {
         alert(data.error);
     } else {
-        document.getElementById('resultado').textContent = data.mejor_documento;
+        document.getElementById('resultado').textContent = data.documento_relevante;
     }
 }
 

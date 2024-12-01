@@ -144,9 +144,15 @@ def tfidf_query():
     query = request.json.get('query')
     if not query:
         return jsonify({'error': 'Se requiere una consulta'}), 400
+    
     similitudes = procesar_tfidf(query, tfidf_vectorizer, tfidf_matrix)
     indice_maximo = np.argmax(similitudes)
     doc_relevante = (data_train + data_test)[indice_maximo]
+    
+    # Verificar qué se está enviando
+    doc_id = doc_relevante['doc_id']
+    print(f"'doc_id': {doc_id}")
+    
     return jsonify({
         'similitudes': similitudes.tolist(),
         'documento_relevante': doc_relevante['texto'],
@@ -161,6 +167,11 @@ def w2v_query():
     similitudes = procesar_w2v(query, model_w2v, corpus_tokens)
     indice_maximo = np.argmax(similitudes)
     doc_relevante = (data_train + data_test)[indice_maximo]
+
+    # Verificar qué se está enviando
+    doc_id = doc_relevante['doc_id']
+    print(f"'doc_id': {doc_id}")
+
     return jsonify({
         'similitudes': similitudes,
         'documento_relevante': doc_relevante['texto'],
