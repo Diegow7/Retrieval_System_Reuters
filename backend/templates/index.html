@@ -3,27 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask API Básica</title>
+    <title>Buscador de Documentos</title>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Demostración Flask con GET y POST</h1>
+    <h1>Buscador de Documentos</h1>
 
-    <!-- Botón para GET -->
-    <button id="getButton">Obtener Datos (GET)</button>
-    <div id="getResponse"></div>
+    <label for="query">Ingrese su consulta:</label>
+    <input type="text" id="query" placeholder="Escribe tu consulta aquí">
 
-    <hr>
+    <div>
+        <input type="radio" id="metodo-tfidf" name="metodo" value="tfidf" checked>
+        <label for="metodo-tfidf">TF-IDF</label>
+        <input type="radio" id="metodo-w2v" name="metodo" value="w2v">
+        <label for="metodo-w2v">Word2Vec</label>
+    </div>
 
-    <!-- Formulario para POST -->
-    <h3>Enviar Datos (POST)</h3>
-    <form id="postForm">
-        <label for="dataInput">Escribe algo: </label>
-        <input type="text" id="dataInput" required>
-        <button type="submit">Enviar</button>
-    </form>
-    <div id="postResponse"></div>
+    <button id="buscar-btn">Buscar</button>
 
-    <!-- Cargar script.js desde la carpeta estática de Flask -->
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <h2>Resultado:</h2>
+    <p id="resultado">Aquí aparecerá el documento mejor rankeado</p>
 </body>
 </html>

@@ -1,33 +1,29 @@
-document.getElementById('getButton').addEventListener('click', function() {
-    fetch('http://127.0.0.1:5000/get_data')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('getResponse').innerText = 'Respuesta GET: ' + data.message;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-});
+// Función para realizar la consulta al servidor
+async function realizarConsulta() {
+    const query = document.getElementById('query').value;
+    const metodo = document.querySelector('input[name="metodo"]:checked').value;
 
-document.getElementById('postForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    if (!query) {
+        alert('Por favor, ingrese una consulta');
+        return;
+    }
 
-    const data = {
-        message: document.getElementById('dataInput').value
-    };
-
-    fetch('http://127.0.0.1:5000/post_data', {
+    const response = await fetch(`http://127.0.0.1:5000/process/${metodo}/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('postResponse').innerText = 'Respuesta POST: ' + data.message + ' - ' + JSON.stringify(data.data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
+        body: JSON.stringify({ query })
     });
-});
+
+    const data = await response.json();
+
+    if (data.error) {
+        alert(data.error);
+    } else {
+        document.getElementById('resultado').textContent = data.mejor_documento;
+    }
+}
+
+// Agregar evento de clic para ejecutar la consulta
+document.getElementById('buscar-btn').addEventListener('click', realizarConsulta);
