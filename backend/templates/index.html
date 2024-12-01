@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask API Básica</title>
+</head>
+<body>
+    <h1>Demostración Flask con GET y POST</h1>
+
+    <!-- Botón para GET -->
+    <button id="getButton">Obtener Datos (GET)</button>
+    <div id="getResponse"></div>
+
+    <hr>
+
+    <!-- Formulario para POST -->
+    <h3>Enviar Datos (POST)</h3>
+    <form id="postForm">
+        <label for="dataInput">Escribe algo: </label>
+        <input type="text" id="dataInput" required>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="postResponse"></div>
+
+    <!-- Cargar script.js desde la carpeta estática de Flask -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
