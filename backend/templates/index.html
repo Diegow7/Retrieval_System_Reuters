@@ -4,24 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de Documentos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="script.js" defer></script>
 </head>
-<body>
-    <h1>Buscador de Documentos</h1>
+<body class="bg-light">
 
-    <label for="query">Ingrese su consulta:</label>
-    <input type="text" id="query" placeholder="Escribe tu consulta aquí">
+    <div class="container mt-5">
+        <h1 class="text-center text-primary mb-4">Poli-Buscador</h1>
+    
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="query" class="form-label">Ingrese su consulta:</label>
+                        <input type="text" id="query" class="form-control" placeholder="Escribe tu consulta aquí">
+                    </div>
+    
+                    <div class="mb-3">
+                        <label class="form-label">Método de búsqueda:</label>
+                        <div class="form-check">
+                            <input type="radio" id="metodo-tfidf" name="metodo" value="tfidf" class="form-check-input" checked>
+                            <label for="metodo-tfidf" class="form-check-label">TF-IDF</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" id="metodo-w2v" name="metodo" value="w2v" class="form-check-input">
+                            <label for="metodo-w2v" class="form-check-label">Word2Vec</label>
+                        </div>
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="num-resultados" class="form-label">Número de resultados:</label>
+                        <input type="number" id="num-resultados" class="form-control" value="1" min="1" max="10">
+                    </div>
+    
+                    <div class="d-grid">
+                        <button id="buscar-btn" type="button" class="btn btn-primary">Buscar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Spinner de carga -->
+        <div id="loading-spinner" class="d-none text-center my-3">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2 text-primary">Procesando su consulta, por favor espere...</p>
+        </div>
+    
+        <h2 class="text-secondary mt-5">Resultado:</h2>
+        <div id="resultado" class="p-3 bg-white border rounded shadow-sm">Aquí aparecerá el documento mejor rankeado</div>
+    </div>    
 
-    <div>
-        <input type="radio" id="metodo-tfidf" name="metodo" value="tfidf" checked>
-        <label for="metodo-tfidf">TF-IDF</label>
-        <input type="radio" id="metodo-w2v" name="metodo" value="w2v">
-        <label for="metodo-w2v">Word2Vec</label>
-    </div>
-
-    <button id="buscar-btn">Buscar</button>
-
-    <h2>Resultado:</h2>
-    <div id="resultado">Aquí aparecerá el documento mejor rankeado</div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

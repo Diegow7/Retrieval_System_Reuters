@@ -142,40 +142,49 @@ def serve_js():
 @app.route('/process/tfidf/', methods=['POST'])
 def tfidf_query():
     query = request.json.get('query')
+    num_resultados = int(request.json.get('num_resultados', 1))  # Obtener el número de resultados
+
     if not query:
         return jsonify({'error': 'Se requiere una consulta'}), 400
-    
+
     similitudes = procesar_tfidf(query, tfidf_vectorizer, tfidf_matrix)
-    indice_maximo = np.argmax(similitudes)
-    doc_relevante = (data_train + data_test)[indice_maximo]
-    
-    # Verificar qué se está enviando
-    doc_id = doc_relevante['doc_id']
-    print(f"'doc_id': {doc_id}")
-    
+    indices_maximos = np.argsort(similitudes)[-num_resultados:][::-1]  # Obtener los índices de los mejores documentos
+
+    documentos_relevantes = []
+    for idx in indices_maximos:
+        doc_relevante = (data_train + data_test)[idx]
+        documentos_relevantes.append({
+            'doc_id': doc_relevante['doc_id'],
+            'texto': doc_relevante['texto']
+        })
+
     return jsonify({
         'similitudes': similitudes.tolist(),
-        'documento_relevante': doc_relevante['texto'],
-        'doc_id': doc_relevante['doc_id']
+        'documentos_relevantes': documentos_relevantes
     })
 
 @app.route('/process/w2v/', methods=['POST'])
 def w2v_query():
     query = request.json.get('query')
+    num_resultados = int(request.json.get('num_resultados', 1))  # Obtener el número de resultados
+
     if not query:
         return jsonify({'error': 'Se requiere una consulta'}), 400
-    similitudes = procesar_w2v(query, model_w2v, corpus_tokens)
-    indice_maximo = np.argmax(similitudes)
-    doc_relevante = (data_train + data_test)[indice_maximo]
 
-    # Verificar qué se está enviando
-    doc_id = doc_relevante['doc_id']
-    print(f"'doc_id': {doc_id}")
+    similitudes = procesar_w2v(query, model_w2v, corpus_tokens)
+    indices_maximos = np.argsort(similitudes)[-num_resultados:][::-1]  # Obtener los índices de los mejores documentos
+
+    documentos_relevantes = []
+    for idx in indices_maximos:
+        doc_relevante = (data_train + data_test)[idx]
+        documentos_relevantes.append({
+            'doc_id': doc_relevante['doc_id'],
+            'texto': doc_relevante['texto']
+        })
 
     return jsonify({
         'similitudes': similitudes,
-        'documento_relevante': doc_relevante['texto'],
-        'doc_id': doc_relevante['doc_id']
+        'documentos_relevantes': documentos_relevantes
     })
 
 if __name__ == '__main__':
